@@ -1,6 +1,9 @@
 import React from 'react';
 import VehicleInfo from '../VehicleInfo';
-import { useParams } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Typography from '@material-ui/core/Typography'
 
 type VehicleInfoPageParams = {
   vehicleId: string
@@ -9,7 +12,15 @@ type VehicleInfoPageParams = {
 const VehicleInfoPage = () => {
   const vehicleId = useParams<VehicleInfoPageParams>();
 
-  return (<VehicleInfo vehicleId={vehicleId.vehicleId} />);
+  return (
+    <>
+      <Breadcrumbs aria-label="breadcrumb">
+        <Link to='/' component={RouterLink}>Vehicle List</Link>
+        <Typography color="textPrimary">Vehicle Info</Typography>
+      </Breadcrumbs>
+      <VehicleInfo vehicleId={vehicleId.vehicleId} />
+    </>
+  );
 }
 
 export default VehicleInfoPage;

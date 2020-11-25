@@ -1,7 +1,6 @@
 import React from 'react';
 import { getVehicleList } from '../lib/api/vehicle';
 import useApi from '../lib/api/useApi';
-import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
@@ -21,7 +20,6 @@ const VehiclesList = () => {
 
   return (
     <>
-      <Typography>Vehicle list</Typography>
       { error && <ApiError open={error !== null} message={error.message} /> }
       <Table>
         <TableHead>
