@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Grid from '@material-ui/core/Grid';
-import { vehicleServiceType, getVehicleServices } from '../lib/api/vehicle';
+import { getVehicleServices } from '../lib/api/vehicle';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow';
-import Button from '@material-ui/core/Button'
+import useApi from '../lib/api/useApi';
+import ApiError from './ApiError';
+import Typography from '@material-ui/core/Typography';
 
 type ServiceListProps = {
   vehicleId: string
@@ -32,11 +34,20 @@ const getUniqueServices = (services) => {
 }
 
 const ServiceList = ({ vehicleId }: ServiceListProps) => {
-  const [services, setServices] = useState<vehicleServiceType>();
-  const [isLoading, setIsLoading] = useState(true);
+  const [services, error, isLoading] = useApi(
+    async () => {
+      const services = await getVehicleServices(vehicleId);
+      if (services.services) {
+        setStatusFilters(getUniqueServices(services.services));
+      }
+      return services
+    }
+  )
+  
   const [statusFilters, setStatusFilters] = React.useState(() => []);
   const filteredServices = services && services.services && services.services
     .filter(({ status }) => statusFilters.includes(status));
+
   // generate a list of services based on data structure to layout table
   const serviceFields = filteredServices && filteredServices
     .reduce(
@@ -51,26 +62,7 @@ const ServiceList = ({ vehicleId }: ServiceListProps) => {
 
   const statuses = services && services.services && getUniqueServices(services.services)
 
-  useEffect(
-    () => {
-      const loadServices = async () => {
-        try {
-          const services = await getVehicleServices(vehicleId);
-          setServices(services);
-          setStatusFilters(getUniqueServices(services.services))
-          setIsLoading(false);
-        } catch (e) {
-          // TODO centralise error handling
-          setIsLoading(false);
-        }
-      }
-
-      loadServices();
-    },
-    [vehicleId]
-  );
-
-  const handleChangeStatusFilter = (event, statusFilters: string[]) => {
+  const handleChangeStatusFilter = (event: React.MouseEvent, statusFilters: string[]) => {
     if (statusFilters.includes('all')) {
       statusFilters = getUniqueServices(services.services)
     }
@@ -79,6 +71,7 @@ const ServiceList = ({ vehicleId }: ServiceListProps) => {
   
   return (
     <>
+      { error && <ApiError open={error !== null} message={error.message} />}
       {
         isLoading
           ? <CircularProgress style={{ marginLeft: '50%' }} />
@@ -91,11 +84,9 @@ const ServiceList = ({ vehicleId }: ServiceListProps) => {
                     onChange={handleChangeStatusFilter}
                     exclusive
                   >
-                    <ToggleButton value='all'>
-                      All
-                    </ToggleButton>
+                    <ToggleButton value='all'>All</ToggleButton>
                     {
-                      statuses && statuses.map((status) => {
+                      statuses && statuses.map((status: string) => {
                         return (
                           <ToggleButton value={status} key={status}>
                             {status}
@@ -110,11 +101,19 @@ const ServiceList = ({ vehicleId }: ServiceListProps) => {
               <TableHead>
                 <TableRow>
                 {
-                  serviceFields && serviceFields.map((field) => (
+                  // generate table based on data returned from API
+                  // this could be logged up from translation tables to generate a more human readable name
+                  // eg. maybe something like i18n(`service.titles.${field}`)
+                  serviceFields && serviceFields.map((field: string) => (
                     <TableCell key={field}>
                       {field}
                     </TableCell>
                   ))
+                }
+                {
+                    !serviceFields && <TableCell>
+                      <Typography align='center'>No services returned</Typography>
+                    </TableCell>
                 }
                 </TableRow>
               </TableHead>

@@ -1,53 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {
-  getVehicleInfo,
-  getVehicleServices,
-  vehicleInfoType,
-  vehicleServiceType
-} from '../lib/api/vehicle';
+import { getVehicleInfo, getVehicleServices } from '../lib/api/vehicle';
+import useApi from '../lib/api/useApi';
 import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
+import ApiError from './ApiError'
 
 type VehicleInfoProps = {
   vehicleId: string
 }
 
 const VehicleInfo = ({ vehicleId }: VehicleInfoProps) => {
-  const [vehicleInfo, setVehicleInfo] = useState<vehicleInfoType>()
-  const [serviceList, setServiceList] = useState<vehicleServiceType>()
-  const [isLoading, setIsLoading] = useState(true)
-  
-  useEffect(
-    () => {
-      const loadInfo = async () => {
-        try {
-          const vehicleInfoPromise = getVehicleInfo(vehicleId)
-          const serviceListPromise = getVehicleServices(vehicleId)
-
-          setVehicleInfo(await vehicleInfoPromise)
-          setServiceList(await serviceListPromise)
-          setIsLoading(false)
-        } catch (e) {
-          // TODO centralise error handling
-          setIsLoading(false)
-        }
-      }
-
-      loadInfo()
-    },
-    [vehicleId]
+  const [vehicleInfo, vehicleInfoError, vehicleInfoLoading] = useApi(
+    async () => getVehicleInfo(vehicleId)
   )
+  const [serviceList, serviceListError, serviceListLoading] = useApi(
+    async () => getVehicleServices(vehicleId)
+  )
+  const isLoading = vehicleInfoLoading || serviceListLoading
   
   return (
     <>
       <Typography>Vehicle details</Typography>
+      {[vehicleInfoError, serviceListError].map((err, i) => {
+        return (err && <ApiError key={i} open={err !== null} message={err.message} />)
+      })}
       <Table>
         <TableBody>
           {

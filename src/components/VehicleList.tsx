@@ -1,35 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { getVehicleList, vehicleListItemType } from '../lib/api/vehicle';
-import Typography from '@material-ui/core/Typography'
+import React from 'react';
+import { getVehicleList } from '../lib/api/vehicle';
+import useApi from '../lib/api/useApi';
+import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell'
+import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
+import ApiError from './ApiError';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 type vehicleRouteParams = {
   vehicleId: string
 }
 
 const VehiclesList = () => {
-  const [vehicles, setVehicles] = useState<vehicleListItemType[]>([])
-
-  useEffect(
-    () => {
-      const loadVehicles = async () => {
-        setVehicles(await getVehicleList())
-      }
-
-      loadVehicles()
-    },
-    []
-  )
+  const [vehicles, error, isLoading] = useApi(getVehicleList)
 
   return (
     <>
       <Typography>Vehicle list</Typography>
+      { error && <ApiError open={error !== null} message={error.message} /> }
       <Table>
         <TableHead>
           <TableRow>
@@ -40,7 +33,13 @@ const VehiclesList = () => {
         </TableHead>
         <TableBody>
           {
-            vehicles.map((vehicle) => {
+          isLoading
+            ? <TableRow>
+              <TableCell colSpan={3}>
+                <CircularProgress style={{ marginLeft: '50%' }} />
+              </TableCell>
+            </TableRow>
+            : vehicles && vehicles.map((vehicle) => {
               return (
                 <TableRow key={vehicle.id}>
                   <TableCell>{vehicle.name}</TableCell>
