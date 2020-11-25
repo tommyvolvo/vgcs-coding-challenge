@@ -1,12 +1,12 @@
 import axios from 'axios';
 import config from '../../config/config.json';
 
-export type vehicleListItem = {
+export type vehicleListItemType = {
   id: string,
   name: string
 }
 
-export type vehicleInfo = {
+export type vehicleInfoType = {
   msidn: string,
   engineStatus: string,
   fleet: string,
@@ -16,7 +16,7 @@ export type vehicleInfo = {
   cassisSeries: string
 }
 
-export type vehicleService = {
+export type vehicleServiceType = {
   communicationStatus: string,
   services: {
     serviceName: string,
@@ -25,21 +25,21 @@ export type vehicleService = {
   }[]
 }
 
-export const getVehicleServices = async (vehicleId: string):Promise<vehicleService> => {
+export const getVehicleServices = async (vehicleId: string):Promise<vehicleServiceType> => {
   const url = `${config.api.url}/vehicle/services`
   const response = await axios.get(url, { params: { id: vehicleId } })
 
   return response.data
 }
 
-export const getVehicleInfo = async (vehicleId: string): Promise<vehicleInfo> => {
+export const getVehicleInfo = async (vehicleId: string): Promise<vehicleInfoType> => {
   const url = `${config.api.url}/vehicle/info`
   const response = await axios.get(url, { params: { id: vehicleId } })
 
   return response.data
 }
 
-export const getVehicleList = async (): Promise<vehicleListItem[]> => {
+export const getVehicleList = async (): Promise<vehicleListItemType[]> => {
   const url = `${config.api.url}/vehicle/list`
   const response = await axios.get(url)
 

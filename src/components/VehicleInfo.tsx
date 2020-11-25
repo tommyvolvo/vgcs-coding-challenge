@@ -5,109 +5,91 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import ServiceList from './ServiceList'
-import { getVehicleInfo, vehicleInfo as vehicleInfoType } from '../lib/api/vehicle';
+import {
+  getVehicleInfo,
+  getVehicleServices,
+  vehicleInfoType,
+  vehicleServiceType
+} from '../lib/api/vehicle';
+import Chip from '@material-ui/core/Chip';
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 type VehicleInfoProps = {
-  loadData: boolean,
   vehicleId: string
 }
 
-const VehicleInfo = ({ vehicleId, loadData }: VehicleInfoProps) => {
+const VehicleInfo = ({ vehicleId }: VehicleInfoProps) => {
   const [vehicleInfo, setVehicleInfo] = useState<vehicleInfoType>()
+  const [serviceList, setServiceList] = useState<vehicleServiceType>()
   const [isLoading, setIsLoading] = useState(true)
   
   useEffect(
     () => {
-      if (loadData) {
-        setIsLoading(true)
-        const loadInfo = async () => {
-          try {
-            setVehicleInfo(await getVehicleInfo(vehicleId))
-            setIsLoading(false)
-          } catch (e) {
-            // TODO centralise error handling
-            setIsLoading(false)
-          }
-        }
+      const loadInfo = async () => {
+        try {
+          const vehicleInfoPromise = getVehicleInfo(vehicleId)
+          const serviceListPromise = getVehicleServices(vehicleId)
 
-        loadInfo()
+          setVehicleInfo(await vehicleInfoPromise)
+          setServiceList(await serviceListPromise)
+          setIsLoading(false)
+        } catch (e) {
+          // TODO centralise error handling
+          setIsLoading(false)
+        }
       }
+
+      loadInfo()
     },
-    [loadData, vehicleId]
+    [vehicleId]
   )
   
   return (
     <>
+      <Typography>Vehicle details</Typography>
       <Table>
         <TableBody>
-        {
-          isLoading
-            ? <TableRow>
-                <TableCell>
-                  <CircularProgress style={{ marginLeft: '50%' }} />
-                </TableCell>
-              </TableRow>
-            : <>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  MSIDN
-                </TableCell>
-                <TableCell>
-                  {vehicleInfo && vehicleInfo.msidn}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  Engine Status
-                </TableCell>
-                <TableCell>
-                  {vehicleInfo && vehicleInfo.engineStatus}
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Fleet
-                </TableCell>
-                <TableCell>
-                  {vehicleInfo && vehicleInfo.fleet}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  Brand
-                </TableCell>
-                <TableCell>
-                  {vehicleInfo && vehicleInfo.brand}
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Country Of Operation
-                </TableCell>
-                <TableCell>
-                  {vehicleInfo && vehicleInfo.countryOfOperation}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  Chassis Number
-                </TableCell>
-                <TableCell>
-                  {vehicleInfo && vehicleInfo.chassisNumber}
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Cassis Series
-                </TableCell>
-                <TableCell colSpan={3}>
-                  {vehicleInfo && vehicleInfo.cassisSeries}
-                </TableCell>
-              </TableRow>
-            </>
-        }
-        </TableBody>
-        <TableBody>
-          <TableRow>
-            <TableCell colSpan={4}>
-              <ServiceList vehicleId={vehicleId} loadData={loadData} />
-            </TableCell>
-          </TableRow>
+          {
+            isLoading
+              ? <TableRow>
+                  <TableCell>
+                    <CircularProgress style={{ marginLeft: '50%' }} />
+                  </TableCell>
+                </TableRow>
+              : <>
+                {vehicleInfo && Object.keys(vehicleInfo).map((key) => {
+                  return (
+                    <TableRow key={key}>
+                      <TableCell component="th" scope="row">{key}</TableCell>
+                      <TableCell>{vehicleInfo[key]} </TableCell>
+                    </TableRow>
+                  )
+                })}
+                <TableRow>
+                  <TableCell component="th" scope="row">Active services</TableCell>
+                  <TableCell>
+                    {
+                      serviceList && serviceList.services && serviceList.services
+                        .filter(({ status }) => status === 'ACTIVE')
+                        .map(({ serviceName }) => {
+                          return (<Chip label={serviceName} key={serviceName} />)
+                        })
+                    }
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell />
+                  <TableCell>
+                    <Link to={`/vehicle/services/${vehicleId}`}>
+                      <Button color='primary' variant='contained'>
+                        View Services
+                      </Button>
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              </>
+          }
         </TableBody>
       </Table>
     </>
