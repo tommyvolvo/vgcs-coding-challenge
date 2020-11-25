@@ -1,0 +1,395 @@
+{
+    "source": "mockoon:1.10.0",
+    "data": [
+        {
+            "type": "environment",
+            "item": {
+                "uuid": "",
+                "lastMigration": 12,
+                "name": "Simple Vehicle API",
+                "endpointPrefix": "vehicle",
+                "latency": 200,
+                "port": 1337,
+                "routes": [
+                    {
+                        "uuid": "",
+                        "documentation": "",
+                        "method": "get",
+                        "endpoint": "list",
+                        "responses": [
+                            {
+                                "uuid": "",
+                                "body": "{\n  \"vehicles\": [\n    {\n      \"name\": \"big truck\",\n      \"id\": \"bd45a676-0d0e-48b4-9693-e8196eb7fcbf\"\n    },\n    {\n      \"name\": \"small truck\",\n      \"id\": \"2337d25f-8917-4e26-920f-ddbe9ba063d6\"\n    },\n    {\n      \"name\": \"niklas' truck\",\n      \"id\": \"f7c8402d-98ca-4728-9c3e-0805c3ecffbb\"\n    },\n    {\n      \"id\": \"6bf12248-3d72-46fa-9d03-fc7176523012\"\n    }\n  ]\n}",
+                                "latency": 0,
+                                "statusCode": 200,
+                                "label": "",
+                                "headers": [
+                                    {
+                                        "key": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "filePath": "",
+                                "sendFileAsBody": false,
+                                "rules": [],
+                                "rulesOperator": "OR",
+                                "disableTemplating": false
+                            }
+                        ],
+                        "enabled": true
+                    },
+                    {
+                        "uuid": "",
+                        "documentation": "",
+                        "method": "get",
+                        "endpoint": "info",
+                        "responses": [
+                            {
+                                "uuid": "",
+                                "body": "{\"reason\": \"Query param id missing from request.\"}",
+                                "latency": 0,
+                                "statusCode": 400,
+                                "label": "Id param missing",
+                                "headers": [
+                                    {
+                                        "key": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "filePath": "",
+                                "sendFileAsBody": false,
+                                "rules": [],
+                                "rulesOperator": "OR",
+                                "disableTemplating": false
+                            },
+                            {
+                                "uuid": "",
+                                "body": "{\n  \"msidn\": \"+4678625847\",\n  \"engineStatus\": \"OK\",\n  \"fleet\": \"Thor's Fleet\",\n  \"brand\": \"Volvo Construction Equipment\",\n  \"countryOfOperation\": \"Japan\",\n  \"chassisNumber\": \"000543\",\n  \"cassisSeries\": \"VCE\"\n}",
+                                "latency": 0,
+                                "statusCode": 200,
+                                "label": "Big Truck",
+                                "headers": [
+                                    {
+                                        "key": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "filePath": "",
+                                "sendFileAsBody": false,
+                                "rules": [
+                                    {
+                                        "target": "query",
+                                        "modifier": "id",
+                                        "value": "bd45a676-0d0e-48b4-9693-e8196eb7fcbf",
+                                        "isRegex": false
+                                    }
+                                ],
+                                "rulesOperator": "OR",
+                                "disableTemplating": false
+                            },
+                            {
+                                "uuid": "",
+                                "body": "{\n  \"msidn\": \"+4635489215\",\n  \"engineStatus\": \"DANGER\",\n  \"fleet\": \"Thor's Fleet\",\n  \"brand\": \"Volvo Trucks\",\n  \"countryOfOperation\": \"Mongolia\",\n  \"chassisNumber\": \"954634\",\n  \"cassisSeries\": \"VT\"\n}",
+                                "latency": 0,
+                                "statusCode": 200,
+                                "label": "Small Truck",
+                                "headers": [
+                                    {
+                                        "key": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "filePath": "",
+                                "sendFileAsBody": false,
+                                "rules": [
+                                    {
+                                        "target": "query",
+                                        "modifier": "id",
+                                        "value": "2337d25f-8917-4e26-920f-ddbe9ba063d6",
+                                        "isRegex": false
+                                    }
+                                ],
+                                "rulesOperator": "OR",
+                                "disableTemplating": false
+                            },
+                            {
+                                "uuid": "",
+                                "body": "{}",
+                                "latency": 0,
+                                "statusCode": 401,
+                                "label": "Niklas' truck",
+                                "headers": [
+                                    {
+                                        "key": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "filePath": "",
+                                "sendFileAsBody": false,
+                                "rules": [
+                                    {
+                                        "target": "query",
+                                        "modifier": "id",
+                                        "value": "f7c8402d-98ca-4728-9c3e-0805c3ecffbb",
+                                        "isRegex": false
+                                    }
+                                ],
+                                "rulesOperator": "OR",
+                                "disableTemplating": false
+                            },
+                            {
+                                "uuid": "",
+                                "body": "{\n  \"msidn\" : \"+467866547\",\n  \"engineStatus\" : \"OK\",\n  \"fleet\" : \"Thor's Fleet\",\n  \"brand\" : \"Volvo Construction Equipment\",\n  \"countryOfOperation\": \"Japan\",\n  \"chassisNumber\" : \"000643\",\n  \"cassisSeries\": \"VCE\"\n}",
+                                "latency": 0,
+                                "statusCode": 200,
+                                "label": "blank",
+                                "headers": [
+                                    {
+                                        "key": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "filePath": "",
+                                "sendFileAsBody": false,
+                                "rules": [
+                                    {
+                                        "target": "query",
+                                        "modifier": "id",
+                                        "value": "6bf12248-3d72-46fa-9d03-fc7176523012",
+                                        "isRegex": false
+                                    }
+                                ],
+                                "rulesOperator": "OR",
+                                "disableTemplating": false
+                            },
+                            {
+                                "uuid": "",
+                                "body": "{}",
+                                "latency": 0,
+                                "statusCode": 404,
+                                "label": "Vehicle Not Found",
+                                "headers": [
+                                    {
+                                        "key": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "filePath": "",
+                                "sendFileAsBody": false,
+                                "rules": [
+                                    {
+                                        "target": "query",
+                                        "modifier": "id",
+                                        "value": "^$|\\s+",
+                                        "isRegex": true
+                                    },
+                                    {
+                                        "target": "query",
+                                        "modifier": "id",
+                                        "value": ".*",
+                                        "isRegex": true
+                                    }
+                                ],
+                                "rulesOperator": "OR",
+                                "disableTemplating": false
+                            }
+                        ],
+                        "enabled": true
+                    },
+                    {
+                        "uuid": "",
+                        "documentation": "",
+                        "method": "get",
+                        "endpoint": "services",
+                        "responses": [
+                            {
+                                "uuid": "",
+                                "body": "{\"reason\": \"Query param id missing from request.\"}",
+                                "latency": 0,
+                                "statusCode": 400,
+                                "label": "Id param missing",
+                                "headers": [
+                                    {
+                                        "key": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "filePath": "",
+                                "sendFileAsBody": false,
+                                "rules": [],
+                                "rulesOperator": "OR",
+                                "disableTemplating": false
+                            },
+                            {
+                                "uuid": "",
+                                "body": "{\n  \"communicationStatus\": \"ACTIVE\",\n  \"services\": [\n    {\n      \"serviceName\": \"GPS\",\n      \"status\": \"ACTIVE\",\n      \"lastUpdate\" : \"2019-01-01T09:23:05+01:00\"\n    },\n    {\n      \"serviceName\": \"FuelMeasurment\",\n      \"status\": \"DEACTIVATED\",\n      \"lastUpdate\" : \"2019-01-01T09:23:55+01:00\"\n    },\n    {\n      \"serviceName\": \"rsdwl\",\n      \"status\": \"ERROR\",\n      \"reason\": \"Service Activation Failed.\",\n      \"lastUpdate\" : \"2019-01-01T09:22:05+01:00\"\n    },\n    {\n      \"serviceName\": \"REMOTE_CONTROLL\",\n      \"status\": \"ACTIVE\",\n      \"lastUpdate\" : \"2020-09-15T19:22:02+01:00\"\n    },\n    {\n      \"serviceName\": \"management-console\",\n      \"status\": \"ACTIVE\",\n      \"lastUpdate\" : \"2020-09-15T19:22:02+01:00\"\n    },\n    {\n      \"serviceName\": \"fleetAdminAdvanced\",\n      \"status\": \"ACTIVE\",\n      \"lastUpdate\" : \"2020-01-16T10:21:22+01:00\"\n    }\n  ]\n}\n\n",
+                                "latency": 3000,
+                                "statusCode": 200,
+                                "label": "Big Truck",
+                                "headers": [
+                                    {
+                                        "key": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "filePath": "",
+                                "sendFileAsBody": false,
+                                "rules": [
+                                    {
+                                        "target": "query",
+                                        "modifier": "id",
+                                        "value": "bd45a676-0d0e-48b4-9693-e8196eb7fcbf",
+                                        "isRegex": false
+                                    }
+                                ],
+                                "rulesOperator": "OR",
+                                "disableTemplating": false
+                            },
+                            {
+                                "uuid": "",
+                                "body": "{\n  \"communicationStatus\": \"ACTIVE\",\n  \"services\": [\n    {\n      \"serviceName\": \"GPS\",\n      \"status\": \"ACTIVE\",\n      \"lastUpdate\" : \"2020-07-16T19:20:30+01:00\"\n    },\n    {\n      \"serviceName\": \"FuelMeasurment\",\n      \"status\": \"ACTIVE\",\n      \"lastUpdate\" : \"2020-07-21T10:02:31+01:00\"\n    },\n    {\n      \"serviceName\": \"rsdwl\",\n      \"status\": \"ACTIVE\",\n      \"lastUpdate\" : \"2020-09-15T19:22:02+01:00\"\n    },\n    {\n      \"serviceName\": \"REMOTE_CONTROLL\",\n      \"status\": \"ACTIVE\",\n      \"lastUpdate\" : \"2020-09-15T19:22:02+01:00\"\n    },\n    {\n      \"serviceName\": \"management-console\",\n      \"status\": \"ACTIVE\",\n      \"lastUpdate\" : \"2020-09-15T19:22:02+01:00\"\n    },\n    {\n      \"serviceName\": \"fleetAdminAdvanced\",\n      \"status\": \"ACTIVE\",\n      \"lastUpdate\" : \"2020-01-16T10:21:22+01:00\"\n    }\n  ]\n}\n\n",
+                                "latency": 2000,
+                                "statusCode": 200,
+                                "label": "Small Truck",
+                                "headers": [
+                                    {
+                                        "key": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "filePath": "",
+                                "sendFileAsBody": false,
+                                "rules": [
+                                    {
+                                        "target": "query",
+                                        "modifier": "id",
+                                        "value": "2337d25f-8917-4e26-920f-ddbe9ba063d6",
+                                        "isRegex": false
+                                    }
+                                ],
+                                "rulesOperator": "OR",
+                                "disableTemplating": false
+                            },
+                            {
+                                "uuid": "",
+                                "body": "{}",
+                                "latency": 6000,
+                                "statusCode": 401,
+                                "label": "Niklas' truck",
+                                "headers": [
+                                    {
+                                        "key": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "filePath": "",
+                                "sendFileAsBody": false,
+                                "rules": [
+                                    {
+                                        "target": "query",
+                                        "modifier": "id",
+                                        "value": "f7c8402d-98ca-4728-9c3e-0805c3ecffbb",
+                                        "isRegex": false
+                                    }
+                                ],
+                                "rulesOperator": "OR",
+                                "disableTemplating": false
+                            },
+                            {
+                                "uuid": "",
+                                "body": "{\n    \"communicationStatus\": \"DEACTIVATED\"\n}",
+                                "latency": 1000,
+                                "statusCode": 200,
+                                "label": "blank",
+                                "headers": [
+                                    {
+                                        "key": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "filePath": "",
+                                "sendFileAsBody": false,
+                                "rules": [
+                                    {
+                                        "target": "query",
+                                        "modifier": "id",
+                                        "value": "6bf12248-3d72-46fa-9d03-fc7176523012",
+                                        "isRegex": false
+                                    }
+                                ],
+                                "rulesOperator": "OR",
+                                "disableTemplating": false
+                            },
+                            {
+                                "uuid": "",
+                                "body": "{}",
+                                "latency": 0,
+                                "statusCode": 404,
+                                "label": "vehicle not found",
+                                "headers": [
+                                    {
+                                        "key": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "filePath": "",
+                                "sendFileAsBody": false,
+                                "rules": [
+                                    {
+                                        "target": "query",
+                                        "modifier": "id",
+                                        "value": "^$|\\s+",
+                                        "isRegex": true
+                                    },
+                                    {
+                                        "target": "query",
+                                        "modifier": "id",
+                                        "value": ".*",
+                                        "isRegex": true
+                                    }
+                                ],
+                                "rulesOperator": "OR",
+                                "disableTemplating": false
+                            }
+                        ],
+                        "enabled": true
+                    }
+                ],
+                "proxyMode": false,
+                "proxyHost": "",
+                "https": false,
+                "cors": true,
+                "headers": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Access-Control-Allow-Origin",
+                        "value": "*"
+                    },
+                    {
+                        "key": "Access-Control-Allow-Methods",
+                        "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+                    },
+                    {
+                        "key": "Access-Control-Allow-Headers",
+                        "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+                    }
+                ],
+                "proxyReqHeaders": [
+                    {
+                        "key": "",
+                        "value": ""
+                    }
+                ],
+                "proxyResHeaders": [
+                    {
+                        "key": "",
+                        "value": ""
+                    }
+                ]
+            }
+        }
+    ]
+}
